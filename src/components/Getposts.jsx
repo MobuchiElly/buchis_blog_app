@@ -2,16 +2,32 @@ import React, { useState, useEffect } from "react";
 
 const Getposts = () => {
   const [posts, setPosts] = useState([]);
+  const [title, setTitle] = useState(null);
+  const [content, setContent] = useState(null);
   const fetchPosts = () => {
     fetch("http://localhost:3002/api/posts")
       .then((response) => response.json())
       .then((data) => {
         setPosts(data);
-        console.log('successfully fetched posts', data);
       })
       .catch((error) => {
         console.error("Error fetching posts:", error);
       });
+  }
+  
+  const makePosts = () => {
+    const newPost = {
+      title,
+      content,
+      id: posts.length + 1
+    }
+    fetch('http://localhost:3002/api/posts', {
+      method: "POST",
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(newPost),
+    });
   }
   useEffect(() => {
     fetchPosts();
@@ -29,6 +45,7 @@ const Getposts = () => {
           </ul>
         ))}
       </ul>
+      <button className="bg-green-700 text-white p-2 rounded-lg" onClick={fetchPosts}>Get POSTS</button>
     </div>
   );
 };
