@@ -1,9 +1,12 @@
 const express = require("express");
 const cors = require("cors");
+const bodyparser = require('body-parser');
 
 const app = express();
 
 app.use(cors());
+// app.use(bodyparser.json());
+app.use(express.json());
 
 const posts = [
     { 
@@ -25,7 +28,7 @@ const posts = [
 
 //Get request
 app.get("/api/posts", (req, res) => {
-    res.json(posts);
+    res.status(200).json(posts);
 })
 
 app.get("/", (req, res) => {
@@ -33,6 +36,12 @@ app.get("/", (req, res) => {
 })
 
 //post request NEXT
+app.post("/api/posts", (req, res) => {
+    const newPost = req.body;
+    posts.push(newPost);
+    res.status(201).json({message:'New post published', posts});
+})
+
 
 const PORT = process.env.PORT || 3001;
 

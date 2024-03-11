@@ -3,6 +3,7 @@ const cors = require("cors");
 const helmet = require("helmet");
 const morgan = require("morgan");
 const { createProxyMiddleware } = require("http-proxy-middleware");
+require('dotenv').config();
 
 const app = express();
 app.use(cors());
@@ -13,10 +14,10 @@ app.disable("x-powered-by"); //Hide express server information
 const services = [
   {
     route: "/api/posts",
-    target: "http://localhost:3001",
+    target: process.env.PORT || `http://localhost:3001`,
   },
 ];
-
+console.log('port process:', process.env.ENDPOINTURL)
 const rateLimit = 20;
 const interval = 60 * 1000;
 
